@@ -3,8 +3,12 @@ import { Footer, Navbar } from "../components";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { NavLink, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Register = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -20,7 +24,20 @@ const Register = () => {
         .required("Required!"),
     }),
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      createUserWithEmailAndPassword(auth, values.Email, values.Password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/login");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+          // ..
+        });
     },
   });
   return (
@@ -83,11 +100,7 @@ const Register = () => {
                 </p>
               </div>
               <div className="text-center">
-                <button
-                  class="my-2 mx-auto btn btn-dark"
-                  type="submit"
-                  disabled
-                >
+                <button class="my-2 mx-auto btn btn-dark" type="submit">
                   Register
                 </button>
               </div>

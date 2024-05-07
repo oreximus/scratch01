@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { Footer, Navbar } from "../components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const auth = getAuth();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -19,16 +21,17 @@ const Login = () => {
         .required("Required!"),
     }),
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
       signInWithEmailAndPassword(auth, values.email, values.password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          // ...
+          navigate("/");
+          console.log(user);
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
         });
     },
   });
