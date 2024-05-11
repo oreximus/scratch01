@@ -5,6 +5,7 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import {
   Home,
@@ -19,6 +20,7 @@ import {
   PageNotFound,
 } from "./pages";
 import Admin from "./pages/Admin";
+import Dashboard from "./pages/Dashboard";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -37,8 +39,8 @@ root.render(
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/product/*" element={<PageNotFound />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Provider>
   </BrowserRouter>,
 );
-
